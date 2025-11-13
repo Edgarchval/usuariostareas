@@ -334,3 +334,101 @@
   font-size: 1rem;
   margin-top: 30px;
 }
+
+.input-busqueda {
+  width: 100%;
+  max-width: 350px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.input-busqueda:focus {
+  border-color: #0033a0;
+  outline: none;
+}
+
+.celda-editable {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 6px;
+  border-bottom: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+.celda-editable:focus {
+  border-bottom: 2px solid #0033a0;
+  outline: none;
+  background: #f0f6ff;
+}
+
+
+.input-busqueda {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.input-busqueda:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+.tabla-usuarios.editable input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.tabla-usuarios.editable input:focus {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+}
+
+.mensaje-flotante {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+  animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.btn-guardar {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background-color: #ffc107;
+  color: #222;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-guardar:hover,
+.btn-editar:hover {
+  opacity: 0.9;
+}

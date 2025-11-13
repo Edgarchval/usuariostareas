@@ -2,13 +2,13 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const apiRoutes = require('./routes/api');
-app.use('/api', require('./routes/api'));
-
 const { sequelize } = require('./models');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// 🚨 Muy importante: esto monta las rutas correctamente
 app.use('/api', apiRoutes);
 
 const PORT = process.env.PORT || 4000;

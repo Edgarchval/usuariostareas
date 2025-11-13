@@ -12,6 +12,7 @@ router.delete('/usuarios/:id', usuarioCtrl.remove);
 router.post('/usuarios/:id/tareas', tareaCtrl.createForUsuario);
 router.put('/tareas/:id', tareaCtrl.update);
 router.delete('/tareas/:id', tareaCtrl.remove);
+router.put("/usuarios/:id", usuarioController.actualizarUsuario);
 
 router.post('/login', usuarioCtrl.login);
 

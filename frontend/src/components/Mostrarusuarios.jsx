@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../App.css";
 
-const MostrarUsuario = ({ onEdit }) => {
+const MostrarUsuario = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [busqueda, setBusqueda] = useState("");
 
   useEffect(() => {
     obtenerUsuarios();
@@ -21,18 +22,12 @@ const MostrarUsuario = ({ onEdit }) => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este usuario?")) return;
-
-    try {
-      await axios.delete(`http://localhost:4000/api/usuarios/${id}`);
-      setUsuarios((prev) => prev.filter((u) => u.id !== id));
-      alert("✅ Usuario eliminado correctamente");
-    } catch (error) {
-      console.error("Error al eliminar usuario:", error);
-      alert("❌ No se pudo eliminar el usuario");
-    }
-  };
+  // Filtrado dinámico
+  const usuariosFiltrados = usuarios.filter((u) =>
+    `${u.nombre} ${u.email} ${u.puesto}`
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+  );
 
   if (loading) return <p className="loading">Cargando usuarios...</p>;
 
@@ -40,8 +35,17 @@ const MostrarUsuario = ({ onEdit }) => {
     <div className="data-grid-container">
       <h2 className="titulo-seccion">📋 Usuarios Registrados</h2>
 
-      {usuarios.length === 0 ? (
-        <p className="no-datos">No hay usuarios registrados.</p>
+      {/* Barra de búsqueda */}
+      <input
+        type="text"
+        placeholder="🔍 Buscar por nombre, email o puesto..."
+        className="input-busqueda"
+        value={busqueda}
+        onChange={(e) => setBusqueda(e.target.value)}
+      />
+
+      {usuariosFiltrados.length === 0 ? (
+        <p className="no-datos">No hay usuarios que coincidan con la búsqueda.</p>
       ) : (
         <div className="tabla-scroll">
           <table className="tabla-usuarios">
@@ -53,31 +57,19 @@ const MostrarUsuario = ({ onEdit }) => {
                 <th>Teléfono</th>
                 <th>Puesto</th>
                 <th>Contraseña</th>
-                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {usuarios.map((u) => (
+              {usuariosFiltrados.map((u) => (
                 <tr key={u.id}>
                   <td>{u.id}</td>
                   <td>{u.nombre}</td>
                   <td>{u.email}</td>
                   <td>{u.telefono || "—"}</td>
                   <td>{u.puesto || "—"}</td>
-                  <td className="password-cell">{u.password}</td>
-                  <td className="acciones">
-                    <button
-                      className="btn-editar"
-                      onClick={() => onEdit && onEdit(u)}
-                    >
-                      ✏️ Editar
-                    </button>
-                    <button
-                      className="btn-eliminar"
-                      onClick={() => handleDelete(u.id)}
-                    >
-                      🗑️ Eliminar
-                    </button>
+                  {/* Mostrar contraseña en asteriscos */}
+                  <td className="password-cell">
+                    {"*".repeat(u.password?.length || 8)}
                   </td>
                 </tr>
               ))}
