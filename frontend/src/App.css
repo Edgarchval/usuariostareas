@@ -199,3 +199,138 @@
   padding: 30px;
   overflow-y: auto;
 }
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-editar {
+  background-color: #ffc107;
+  color: #000;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-editar:hover {
+  background-color: #e0a800;
+}
+
+.btn-eliminar {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-eliminar:hover {
+  background-color: #c82333;
+}
+
+/* --- ESTILOS TIPO DATA GRID MODERNO --- */
+.data-grid-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  margin: 20px auto;
+  max-width: 1100px;
+  overflow-x: auto;
+  transition: all 0.3s ease;
+}
+
+.titulo-seccion {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #0d47a1;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tabla-scroll {
+  overflow-x: auto;
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla-usuarios thead {
+  background: linear-gradient(90deg, #007bff, #00c3ff);
+  color: white;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+.tabla-usuarios tbody tr:hover {
+  background-color: #f4faff;
+  transform: scale(1.005);
+  transition: all 0.2s ease-in-out;
+}
+
+.password-cell {
+  font-family: "Courier New", monospace;
+  color: #666;
+}
+
+.btn-editar,
+.btn-eliminar {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-editar {
+  background-color: #2196f3;
+  color: #fff;
+  margin-right: 5px;
+}
+
+.btn-editar:hover {
+  background-color: #1976d2;
+  transform: scale(1.05);
+}
+
+.btn-eliminar {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.btn-eliminar:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
+.no-datos {
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.loading {
+  text-align: center;
+  color: #444;
+  font-size: 1rem;
+  margin-top: 30px;
+}
