@@ -1,0 +1,93 @@
+.usuario-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 10px;
+}
+
+.usuario-form {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #0033a0; /* Azul Coppel */
+}
+
+.usuario-form h2 {
+  text-align: center;
+  color: #0033a0;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 8px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  transition: 0.3s ease;
+  font-size: 15px;
+}
+
+.form-group input:focus {
+  border-bottom: 2px solid #0033a0;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #444;
+}
+
+.checkbox input {
+  margin-right: 8px;
+}
+
+.form-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.btn-enviar {
+  background-color: #0033a0;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.btn-enviar:hover {
+  background-color: #002070;
+}
+
+@media (max-width: 480px) {
+  .usuario-form {
+    padding: 20px;
+  }
+
+  .btn-enviar {
+    padding: 10px;
+  }
+}
