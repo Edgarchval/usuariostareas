@@ -1,35 +1,46 @@
 import React, { useState } from "react";
+
 import AgregarUsuario from "../components/Agregarusuario";
 import MostrarUsuario from "../components/Mostrarusuarios";
+import EditarUsuarios from "../components/Editarusuario";
 
 import "../App.css";
 
 function UsuariosPage() {
   const [selectedOption, setSelectedOption] = useState("listar");
 
+  // 🔄 FUNCIÓN DE RECARGA
+  const recargarPagina = () => {
+    setSelectedOption("listar"); // vuelve al inicio
+    window.location.reload();    // recarga la vista completa
+  };
+
   const renderContent = () => {
     switch (selectedOption) {
-      // --- Opciones de USUARIOS ---
       case "agregar":
         return <AgregarUsuario />;
+
       case "listar":
         return <MostrarUsuario />;
-      case "editar":
-        return <h3>✏️ Selecciona un usuario para editar</h3>;
-      case "eliminar":
-        return <h3>🗑️ Selecciona un usuario para eliminar</h3>;
 
-      // --- Opciones de TAREAS ---
+      case "editar":
+        return <EditarUsuarios />;
+
+      // ---- OPCIONES TAREAS ----
       case "agregarTarea":
         return <h3>📝 Crear nueva tarea</h3>;
+
       case "listarTareas":
         return <h3>📋 Mostrar tareas asignadas</h3>;
+
       case "editarTarea":
         return <h3>✏️ Selecciona una tarea para editar</h3>;
+
       case "eliminarTarea":
         return <h3>🗑️ Selecciona una tarea para eliminar</h3>;
+
       case "reasignarTarea":
-        return <h3>🔄 Cambiar usuario asignado a la tarea</h3>;
+        return <h3>🔄 Reasignar usuario de tarea</h3>;
 
       default:
         return <MostrarUsuario />;
@@ -41,6 +52,16 @@ function UsuariosPage() {
       {/* Menú lateral */}
       <aside className="sidebar">
         <div className="menu-header">
+
+          {/* 🔄 BOTÓN DE RECARGA */}
+          <button
+            className="reload-btn"
+            onClick={recargarPagina}
+          >
+            🔄
+          </button>
+
+          {/* TÍTULO */}
           <button
             className="hamburger"
             onClick={() =>
@@ -54,9 +75,7 @@ function UsuariosPage() {
 
         <ul className="menu">
           <li onClick={() => setSelectedOption("agregar")}>➕ Agregar usuario</li>
-          <li onClick={() => setSelectedOption("listar")}>📋 Mostrar usuarios</li>
           <li onClick={() => setSelectedOption("editar")}>✏️ Editar usuario</li>
-          <li onClick={() => setSelectedOption("eliminar")}>🗑️ Eliminar usuario</li>
 
           <hr />
 
