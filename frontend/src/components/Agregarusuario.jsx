@@ -1,8 +1,15 @@
 import { useState } from "react";
-import { api } from "../Api.js";
-import "./Agregarusuarioestilo.css"; // 👈 Importamos el CSS
+import { api } from "../Api.js"; 
+// Importamos la instancia de Axios para hacer peticiones a la API
 
+import "./Agregarusuarioestilo.css"; 
+// Importamos los estilos del formulario
+
+
+// Componente que agrega un nuevo usuario
 function Agregarusuario({ onUsuarioAgregado }) {
+
+  // Estado para los campos del formulario
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -11,19 +18,29 @@ function Agregarusuario({ onUsuarioAgregado }) {
     puesto: "",
   });
 
+  // Maneja los cambios en los inputs del formulario
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,                   // Copia el estado actual
+      [e.target.name]: e.target.value // Actualiza el campo modificado
+    });
   };
 
+  // Maneja el envío del formulario
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evita recargar la página
+
     try {
+      // Validación simple de contraseña
       if (!formData.password.trim()) {
         alert("La contraseña es obligatoria");
         return;
       }
 
+      // Enviar datos a la API (POST /usuarios)
       await api.post("/usuarios", formData);
+
+      // Limpiar formulario después de agregar
       setFormData({
         nombre: "",
         email: "",
@@ -31,7 +48,10 @@ function Agregarusuario({ onUsuarioAgregado }) {
         telefono: "",
         puesto: "",
       });
+
+      // Avisamos al padre que se agregó un usuario nuevo
       onUsuarioAgregado();
+
     } catch (error) {
       console.error("Error al agregar usuario:", error);
     }
@@ -39,9 +59,12 @@ function Agregarusuario({ onUsuarioAgregado }) {
 
   return (
     <div className="usuario-form-container">
+      {/* Formulario de registro */}
       <form className="usuario-form" onSubmit={handleSubmit}>
+        
         <h2>Agregar Usuario</h2>
 
+        {/* Campo Nombre */}
         <div className="form-group">
           <label>Nombre:</label>
           <input
@@ -53,6 +76,7 @@ function Agregarusuario({ onUsuarioAgregado }) {
           />
         </div>
 
+        {/* Campo Email */}
         <div className="form-group">
           <label>Correo:</label>
           <input
@@ -65,6 +89,7 @@ function Agregarusuario({ onUsuarioAgregado }) {
           />
         </div>
 
+        {/* Campo Contraseña */}
         <div className="form-group">
           <label>Contraseña:</label>
           <input
@@ -77,6 +102,7 @@ function Agregarusuario({ onUsuarioAgregado }) {
           />
         </div>
 
+        {/* Campo Teléfono */}
         <div className="form-group">
           <label>Teléfono:</label>
           <input
@@ -87,6 +113,7 @@ function Agregarusuario({ onUsuarioAgregado }) {
           />
         </div>
 
+        {/* Campo Puesto */}
         <div className="form-group">
           <label>Puesto:</label>
           <input
@@ -97,14 +124,17 @@ function Agregarusuario({ onUsuarioAgregado }) {
           />
         </div>
 
+        {/* Footer: Checkbox y botón */}
         <div className="form-footer">
           <label className="checkbox">
             <input type="checkbox" required /> Acepto los Términos y Condiciones
           </label>
+
           <button type="submit" className="btn-enviar">
             Enviar
           </button>
         </div>
+
       </form>
     </div>
   );

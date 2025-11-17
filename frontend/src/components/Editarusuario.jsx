@@ -6,7 +6,6 @@ const EditarUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [editandoId, setEditandoId] = useState(null);
   const [usuarioEditado, setUsuarioEditado] = useState({});
-  const [mostrarPassword, setMostrarPassword] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busqueda, setBusqueda] = useState("");
 
@@ -29,7 +28,7 @@ const EditarUsuarios = () => {
     setEditandoId(usuario.id);
     setUsuarioEditado({
       ...usuario,
-      password: ""
+      password: "" // Campo agregado
     });
   };
 
@@ -42,6 +41,7 @@ const EditarUsuarios = () => {
     try {
       const dataEnviar = { ...usuarioEditado };
 
+      // Si password está vacío, no lo enviamos
       if (!dataEnviar.password || dataEnviar.password.trim() === "") {
         delete dataEnviar.password;
       }
@@ -83,13 +83,10 @@ const EditarUsuarios = () => {
 
   return (
     <div className="data-grid-container">
-
-      {/* TÍTULO SIN BOTÓN AGREGAR */}
       <div className="header-usuarios">
         <h2 className="titulo-usuarios">MODIFICAR INFORMACION</h2>
       </div>
 
-      {/* BUSCADOR */}
       <div className="buscador-contenedor">
         <input
           type="text"
@@ -109,6 +106,7 @@ const EditarUsuarios = () => {
               <th>Email</th>
               <th>Teléfono</th>
               <th>Puesto</th>
+              <th>Actualizar contraseña</th> {/* Nuevo */}
               <th>Acciones</th>
             </tr>
           </thead>
@@ -118,6 +116,7 @@ const EditarUsuarios = () => {
               <tr key={u.id}>
                 <td>{u.id}</td>
 
+                {/* Nombre */}
                 <td>
                   {editandoId === u.id ? (
                     <input
@@ -132,6 +131,7 @@ const EditarUsuarios = () => {
                   )}
                 </td>
 
+                {/* Email */}
                 <td>
                   {editandoId === u.id ? (
                     <input
@@ -146,6 +146,7 @@ const EditarUsuarios = () => {
                   )}
                 </td>
 
+                {/* Telefono */}
                 <td>
                   {editandoId === u.id ? (
                     <input
@@ -160,6 +161,7 @@ const EditarUsuarios = () => {
                   )}
                 </td>
 
+                {/* Puesto */}
                 <td>
                   {editandoId === u.id ? (
                     <input
@@ -171,6 +173,22 @@ const EditarUsuarios = () => {
                     />
                   ) : (
                     u.puesto
+                  )}
+                </td>
+
+                {/* 🔐 NUEVO CAMPO: Actualizar contraseña */}
+                <td>
+                  {editandoId === u.id ? (
+                    <input
+                      type="password"
+                      placeholder="Nueva contraseña"
+                      value={usuarioEditado.password}
+                      onChange={(e) =>
+                        setUsuarioEditado({ ...usuarioEditado, password: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <span style={{ color: "#777" }}>••••••••</span> // No mostrar password real
                   )}
                 </td>
 
@@ -195,10 +213,10 @@ const EditarUsuarios = () => {
                     </>
                   )}
                 </td>
-
               </tr>
             ))}
           </tbody>
+
         </table>
       </div>
     </div>

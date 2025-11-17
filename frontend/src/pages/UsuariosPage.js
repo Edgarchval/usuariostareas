@@ -1,22 +1,29 @@
 import React, { useState } from "react";
 
+// Componentes de usuarios
 import AgregarUsuario from "../components/Agregarusuario";
 import MostrarUsuario from "../components/Mostrarusuarios";
 import EditarUsuarios from "../components/Editarusuario";
+
+// Componentes de tareas
+import TareasPage from "./TareasPage";
+import TareasListaGeneral from "../components/TareasListaGeneral";
 
 import "../App.css";
 
 function UsuariosPage() {
   const [selectedOption, setSelectedOption] = useState("listar");
 
-  // 🔄 FUNCIÓN DE RECARGA
+  // Recargar completamente la vista principal
   const recargarPagina = () => {
-    setSelectedOption("listar"); // vuelve al inicio
-    window.location.reload();    // recarga la vista completa
+    setSelectedOption("listar");
+    window.location.reload();
   };
 
+  // Render dinámico del contenido
   const renderContent = () => {
     switch (selectedOption) {
+      // ------------------- USUARIOS -------------------
       case "agregar":
         return <AgregarUsuario />;
 
@@ -26,22 +33,14 @@ function UsuariosPage() {
       case "editar":
         return <EditarUsuarios />;
 
-      // ---- OPCIONES TAREAS ----
-      case "agregarTarea":
-        return <h3>📝 Crear nueva tarea</h3>;
+      // ------------------- TAREAS -------------------
+      case "agregarTareaUsuario":
+        return <TareasPage />;
 
-      case "listarTareas":
-        return <h3>📋 Mostrar tareas asignadas</h3>;
+      case "verTodasTareas":
+        return <TareasListaGeneral />;
 
-      case "editarTarea":
-        return <h3>✏️ Selecciona una tarea para editar</h3>;
-
-      case "eliminarTarea":
-        return <h3>🗑️ Selecciona una tarea para eliminar</h3>;
-
-      case "reasignarTarea":
-        return <h3>🔄 Reasignar usuario de tarea</h3>;
-
+      // Default
       default:
         return <MostrarUsuario />;
     }
@@ -49,19 +48,15 @@ function UsuariosPage() {
 
   return (
     <div className="main-container">
-      {/* Menú lateral */}
-      <aside className="sidebar">
-        <div className="menu-header">
 
-          {/* 🔄 BOTÓN DE RECARGA */}
-          <button
-            className="reload-btn"
-            onClick={recargarPagina}
-          >
+      {/* -------------------- MENÚ LATERAL -------------------- */}
+      <aside className="sidebar">
+
+        <div className="menu-header">
+          <button className="reload-btn" onClick={recargarPagina}>
             🔄
           </button>
 
-          {/* TÍTULO */}
           <button
             className="hamburger"
             onClick={() =>
@@ -70,25 +65,38 @@ function UsuariosPage() {
           >
             ☰
           </button>
+
           <h2>Usuarios</h2>
         </div>
 
         <ul className="menu">
-          <li onClick={() => setSelectedOption("agregar")}>➕ Agregar usuario</li>
-          <li onClick={() => setSelectedOption("editar")}>✏️ Editar usuario</li>
+
+          {/* ---------- OPCIONES DE USUARIOS ---------- */}
+          <li onClick={() => setSelectedOption("agregar")}>
+            ➕ Agregar usuario
+          </li>
+
+          <li onClick={() => setSelectedOption("editar")}>
+            ✏️ Editar usuario
+          </li>
 
           <hr />
 
+          {/* ---------- OPCIONES DE TAREAS ---------- */}
           <h3 style={{ marginLeft: "10px" }}>📂 Tareas</h3>
-          <li onClick={() => setSelectedOption("agregarTarea")}>➕ Crear tarea</li>
-          <li onClick={() => setSelectedOption("listarTareas")}>📋 Mostrar tareas</li>
-          <li onClick={() => setSelectedOption("editarTarea")}>✏️ Editar tarea</li>
-          <li onClick={() => setSelectedOption("eliminarTarea")}>🗑️ Eliminar tarea</li>
-          <li onClick={() => setSelectedOption("reasignarTarea")}>🔄 Reasignar tarea</li>
+
+          <li onClick={() => setSelectedOption("agregarTareaUsuario")}>
+            📝 Agregar / Ver tareas por usuario
+          </li>
+
+          <li onClick={() => setSelectedOption("verTodasTareas")}>
+            📋 Ver todas las tareas
+          </li>
+
         </ul>
       </aside>
 
-      {/* Contenido dinámico */}
+      {/* -------------------- CONTENIDO -------------------- */}
       <main className="content">{renderContent()}</main>
     </div>
   );

@@ -1,81 +1,103 @@
+// controllers/tarea.controller.js
 const db = require("../database/db");
 
-// Crear tarea para un usuario
+// ------------------------------------------------------
+// Crear una tarea asociada a un usuario
+// POST /api/usuarios/:id/tareas
+// ------------------------------------------------------
 exports.createForUsuario = (req, res) => {
   const usuarioId = req.params.id;
   const { titulo, descripcion, estatus, fecha_entrega } = req.body;
 
-  // Verificar que el usuario existe
-  const checkUser = "SELECT * FROM usuarios WHERE id = ?";
-  db.query(checkUser, [usuarioId], (err, rows) => {
-    if (err) return res.status(500).json({ message: "Error en servidor" });
+  if (!titulo) {
+    return res.status(400).json({ message: "El título es obligatorio" });
+  }
 
-    if (rows.length === 0) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
-    }
+  const query = `
+    INSERT INTO tareas (usuarioId, titulo, descripcion, estatus, fecha_entrega)
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
-    const query = `
-      INSERT INTO tareas (usuarioId, titulo, descripcion, estatus, fecha_entrega)
-      VALUES (?, ?, ?, ?, ?)
-    `;
-
-    db.query(
-      query,
-      [usuarioId, titulo, descripcion, estatus || "pendiente", fecha_entrega || null],
-      (err, result) => {
-        if (err) return res.status(500).json({ message: "Error al crear tarea" });
-
-        res.status(201).json({
-          id: result.insertId,
-          usuarioId,
-          titulo,
-          descripcion,
-          estatus: estatus || "pendiente",
-          fecha_entrega,
-        });
+  db.query(
+    query,
+    [usuarioId, titulo, descripcion || null, estatus || "pendiente", fecha_entrega || null],
+    (err, result) => {
+      if (err) {
+        console.error("Error al insertar tarea:", err);
+        return res.status(500).json({ message: "Error al crear tarea" });
       }
-    );
-  });
+
+      // Devolvemos la tarea recién creada
+      res.status(201).json({
+        id: result.insertId,
+        usuarioId,
+        titulo,
+        descripcion,
+        estatus: estatus || "pendiente",
+        fecha_entrega: fecha_entrega || null
+      });
+    }
+  );
 };
 
+// ------------------------------------------------------
 // Actualizar tarea
+// PUT /api/tareas/:id
+// ------------------------------------------------------
 exports.update = (req, res) => {
-  const tareaId = req.params.id;
-  const { titulo, descripcion, estatus, fecha_entrega } = req.body;
+  const id = req.params.id;
+  const { titulo, descripcion, estatus, fecha_entrega, usuarioId } = req.body;
 
   const query = `
     UPDATE tareas
-    SET titulo = ?, descripcion = ?, estatus = ?, fecha_entrega = ?
+    SET titulo = ?, descripcion = ?, estatus = ?, fecha_entrega = ?, usuarioId = ?
     WHERE id = ?
   `;
 
   db.query(
     query,
-    [titulo, descripcion, estatus, fecha_entrega, tareaId],
-    (err, result) => {
-      if (err) return res.status(500).json({ message: "Error al actualizar tarea" });
-
-      if (result.affectedRows === 0) {
-        return res.status(404).json({ message: "Tarea no encontrada" });
+    [titulo, descripcion, estatus, fecha_entrega, usuarioId, id],
+    (err) => {
+      if (err) {
+        console.error("Error al actualizar tarea:", err);
+        return res.status(500).json({ message: "Error al actualizar tarea" });
       }
-
       res.json({ message: "Tarea actualizada correctamente" });
     }
   );
 };
 
+// ------------------------------------------------------
 // Eliminar tarea
+// DELETE /api/tareas/:id
+// ------------------------------------------------------
 exports.remove = (req, res) => {
-  const tareaId = req.params.id;
+  const id = req.params.id;
 
   const query = "DELETE FROM tareas WHERE id = ?";
-  db.query(query, [tareaId], (err, result) => {
-    if (err) return res.status(500).json({ message: "Error al eliminar tarea" });
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Tarea no encontrada" });
+  db.query(query, [id], (err) => {
+    if (err) {
+      console.error("Error al eliminar tarea:", err);
+      return res.status(500).json({ message: "Error al eliminar tarea" });
     }
-
     res.json({ message: "Tarea eliminada correctamente" });
+  });
+};
+
+
+
+exports.getAll = (req, res) => {
+  const sql = `
+    SELECT t.*, u.nombre AS usuarioNombre
+    FROM tareas t
+    INNER JOIN usuarios u ON u.id = t.usuarioId
+    ORDER BY t.id DESC
+  `;
+
+  db.query(sql, (err, rows) => {
+    if (err) return res.status(500).json({ message: 'Error DB', error: err });
+
+    res.json(rows);
   });
 };
