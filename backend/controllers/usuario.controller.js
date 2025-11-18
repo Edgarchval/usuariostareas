@@ -19,36 +19,39 @@ exports.getAll = (req, res) => {
 };
 
 //---------------------------------------------------------
-// OBTENER UN USUARIO POR ID + SUS TAREAS
-//---------------------------------------------------------
+// OBTENER UN USUARIO POR ID + SUS TAREAS (solo tareas NO completadas)
 exports.getById = (req, res) => {
   const { id } = req.params;
 
   const queryUsuario = "SELECT * FROM usuarios WHERE id = ?";
-  const queryTareas = "SELECT * FROM tareas WHERE usuarioId = ?";
+  
+  // ⛔ Ocultamos las tareas completadas
+  const queryTareas = `
+    SELECT * FROM tareas 
+    WHERE usuarioId = ? 
+    AND estatus != 'completada'
+  `;
 
-  // 1️⃣ Obtener datos del usuario
+  // Obtener usuario
   db.query(queryUsuario, [id], (err, rows) => {
     if (err) {
       console.error("Error al obtener usuario:", err);
       return res.status(500).json({ message: "Error en el servidor" });
     }
 
-    // Si no existe
     if (rows.length === 0) {
       return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     const usuario = rows[0];
 
-    // 2️⃣ Obtener tareas asociadas al usuario
+    // Obtener tareas filtradas
     db.query(queryTareas, [id], (err2, tareasRows) => {
       if (err2) {
         console.error("Error al obtener tareas:", err2);
         return res.status(500).json({ message: "Error en el servidor" });
       }
 
-      // 3️⃣ Devolver usuario + tareas
       res.json({
         ...usuario,
         tareas: tareasRows
@@ -56,6 +59,7 @@ exports.getById = (req, res) => {
     });
   });
 };
+
 
 //---------------------------------------------------------
 // CREAR NUEVO USUARIO
@@ -179,31 +183,25 @@ exports.remove = (req, res) => {
   });
 };
 
-//---------------------------------------------------------
-// LOGIN BÁSICO (SIN JWT AÚN)
-//---------------------------------------------------------
+//LOGIN 
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
   const query =
     "SELECT * FROM usuarios WHERE email = ? AND password = ? LIMIT 1";
 
-  // Verificación de credenciales
   db.query(query, [email, password], (err, rows) => {
     if (err) {
       console.error("Error en login:", err);
       return res.status(500).json({ message: "Error en el servidor" });
     }
 
-    // No encontrado → credenciales inválidas
     if (rows.length === 0) {
       return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
-    // Inicio correcto
     res.json({ usuario: rows[0] });
   });
 };
-
 
 

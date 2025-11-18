@@ -74,6 +74,29 @@ function TareasPage() {
       return;
     }
 
+    // ================================
+    // VALIDACIONES
+    // ================================
+    if (!form.titulo.trim()) {
+      alert("El campo Título es obligatorio.");
+      return;
+    }
+
+    if (!form.descripcion.trim()) {
+      alert("El campo Descripción es obligatorio.");
+      return;
+    }
+
+    if (!form.estatus.trim()) {
+      alert("Debes seleccionar un estatus.");
+      return;
+    }
+
+    if (!form.fecha_entrega.trim()) {
+      alert("Debes seleccionar la fecha de entrega.");
+      return;
+    }
+
     try {
       const res = await api.post(`/usuarios/${usuarioSel.id}/tareas`, form);
 
@@ -223,18 +246,18 @@ function TareasPage() {
             </div>
 
             <div className="form-group">
-              <label>Estatus:</label>
-              <select
-                name="estatus"
-                className="form-input"
-                value={form.estatus}
-                onChange={handleChangeForm}
-              >
-                <option value="pendiente">Pendiente</option>
-                <option value="en_progreso">En Progreso</option>
-                <option value="completada">Completada</option>
-              </select>
-            </div>
+  <label>Estatus:</label>
+  <select
+    name="estatus"
+    className="form-input"
+    value={form.estatus}
+    onChange={handleChangeForm}
+  >
+    <option value="pendiente">Pendiente</option>
+    <option value="completada">Completada</option>
+  </select>
+</div>
+
 
             <div className="form-group">
               <label>Fecha entrega:</label>

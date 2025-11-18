@@ -26,7 +26,7 @@ function AppContent() {
       <Routes>
 
         {/* Ruta principal (se usa UsuariosPage como página de inicio) */}
-        <Route path="/" element={<UsuariosPage />} />
+        <Route path="/" element={<LoginPage />} />
 
         {/* Página de usuarios */}
         <Route path="/usuarios" element={<UsuariosPage />} />
